@@ -243,7 +243,7 @@ workflows:
   default:
     jobs:
       - test-build
-      - upload-docker:
+      - upload-docker-hub:
           requires:
             - test-build
           filters:
