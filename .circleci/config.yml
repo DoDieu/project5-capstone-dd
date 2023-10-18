@@ -62,19 +62,18 @@ jobs:
   upload-docker:
     docker:
       - image: circleci/python:3.8
+
     working_directory: ~/repo
+
     steps:
       - checkout
       - setup_remote_docker:
-          version: 19.03.13
+          docker_layer_caching: true
       - run:
           name: Build docker container
           command: |
             docker build -t $DOCKER_IMAGE_NAME .
             docker image ls
-      - setup_remote_docker:
-          docker_layer_caching: true
-
       - run:
           name: Authenticate AWS ECR
           command: |
