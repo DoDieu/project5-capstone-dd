@@ -61,38 +61,25 @@ jobs:
 
   upload-docker:
     docker:
-      - image: circleci/python:3.8
+      - image: circleci/golang:1.15
     working_directory: ~/repo
     steps:
       - checkout
       - setup_remote_docker:
-          docker_layer_caching: true
+          version: 19.03.13
       - run:
           name: Build docker container
           command: |
-            docker build -t $DOCKER_IMAGE_NAME .
+            docker build --tag=$DOCKER_IMAGE_NAME .
             docker image ls
       - run:
-          name: Authenticate AWS ECR
+          name: Upload Docker to Dockerhub
           command: |
-            aws ecr get-login-password --region your-region | docker login --username AWS --password-stdin your-account-id.dkr.ecr.your-region.amazonaws.com
-      - run:
-          name: Push Docker image to AWS ECR
-          command: |
-            docker tag 773453802440.dkr.ecr.us-east-1.amazonaws.com/capstone-project5:latest
-            docker push 773453802440.dkr.ecr.us-east-1.amazonaws.com/capstone-project5:latest
-      - run:
-          name: Deploy to Kubernetes
-          command: |
-            kubectl apply -f ~/project/ansible/roles/capstone-deployment/files/capstone-project-deployment.yaml
-      # - run:
-      #     name: Upload Docker to Dockerhub
-      #     command: |
-      #       echo "Docker ID and Image: $DOCKER_IMAGE_NAME"
-      #       docker login -u="$DOCKERHUB_USERNAME" -p="$DOCKERHUB_PASSWORD"
-      #       docker tag $DOCKER_IMAGE_NAME $DOCKERHUB_USERNAME/$DOCKER_IMAGE_NAME:$CIRCLE_WORKFLOW_ID
-      #       docker push $DOCKERHUB_USERNAME/$DOCKER_IMAGE_NAME:$CIRCLE_WORKFLOW_ID
-      
+            echo "Docker ID and Image: $DOCKER_IMAGE_NAME"
+            docker login -u="$DOCKERHUB_USERNAME" -p="$DOCKERHUB_PASSWORD"
+            docker tag $DOCKER_IMAGE_NAME $DOCKERHUB_USERNAME/$DOCKER_IMAGE_NAME:$CIRCLE_WORKFLOW_ID
+            docker push $DOCKERHUB_USERNAME/$DOCKER_IMAGE_NAME:$CIRCLE_WORKFLOW_ID
+
   deploy-infrastructure:
     docker:
       - image: amazon/aws-cli
@@ -168,7 +155,7 @@ jobs:
       - install_ansible
       - install-kubectl
       - add_ssh_keys:
-          fingerprints: [25:ef:98:45:ed:42:7b:04:48:9f:05:2e:10:86:1f:90]
+          fingerprints: [31:30:44:3f:d4:92:b1:68:4f:0d:a9:66:b4:ec:40:5a]
       - attach_workspace:
           at: ~/
       - run:
@@ -192,7 +179,7 @@ jobs:
       - install_ansible
       - install-kubectl
       - add_ssh_keys:
-          fingerprints: [25:ef:98:45:ed:42:7b:04:48:9f:05:2e:10:86:1f:90]
+          fingerprints: [31:30:44:3f:d4:92:b1:68:4f:0d:a9:66:b4:ec:40:5a]
       - attach_workspace:
           at: ~/
       - run:
@@ -227,7 +214,7 @@ jobs:
       - install_awscli
       - install_ansible
       - add_ssh_keys:
-          fingerprints: [25:ef:98:45:ed:42:7b:04:48:9f:05:2e:10:86:1f:90]
+          fingerprints: [31:30:44:3f:d4:92:b1:68:4f:0d:a9:66:b4:ec:40:5a]
       - attach_workspace:
           at: ~/
       - run:
