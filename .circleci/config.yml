@@ -259,7 +259,8 @@ workflows:
       - configure-cluster:
           requires:
             - configure-infrastructure
-            - upload-docker
+            - upload-docker-hub
+            - aws-ecs
       - deploy-docker:
           requires:
             - configure-cluster
