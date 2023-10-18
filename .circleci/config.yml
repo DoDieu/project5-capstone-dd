@@ -79,12 +79,7 @@ jobs:
             docker login -u="$DOCKERHUB_USERNAME" -p="$DOCKERHUB_PASSWORD"
             docker tag $DOCKER_IMAGE_NAME $DOCKERHUB_USERNAME/$DOCKER_IMAGE_NAME:$CIRCLE_WORKFLOW_ID
             docker push $DOCKERHUB_USERNAME/$DOCKER_IMAGE_NAME:$CIRCLE_WORKFLOW_ID
-      - run:
-          name: docker login repository
-          command: |
-            aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 773453802440.dkr.ecr.us-east-1.amazonaws.com
-            docker tag capstone-project5:latest 773453802440.dkr.ecr.us-east-1.amazonaws.com/capstone-project5:latest
-            docker push 773453802440.dkr.ecr.us-east-1.amazonaws.com/capstone-project5:latest
+      
   deploy-infrastructure:
     docker:
       - image: amazon/aws-cli
@@ -93,6 +88,12 @@ jobs:
       - run:
           name: Install dependencies
           command: yum install -y tar gzip
+      - run:
+          name: docker login repository
+          command: |
+            aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 773453802440.dkr.ecr.us-east-1.amazonaws.com
+            docker tag capstone-project5:latest 773453802440.dkr.ecr.us-east-1.amazonaws.com/capstone-project5:latest
+            docker push 773453802440.dkr.ecr.us-east-1.amazonaws.com/capstone-project5:latest
       - run:
           name: Ensure EKS network exists
           command: |
