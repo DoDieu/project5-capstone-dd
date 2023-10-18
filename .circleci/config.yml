@@ -83,6 +83,7 @@ jobs:
   deploy-infrastructure:
     docker:
       - image: amazon/aws-cli
+      - image: circleci/golang:1.15
     steps:
       - checkout
       - run:
