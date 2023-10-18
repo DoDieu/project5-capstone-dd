@@ -249,6 +249,9 @@ workflows:
           filters:
             branches:
               only: [ main ]
+      - AWS-ECS:
+          requires:
+            - upload-docker
       - deploy-infrastructure:
           filters:
             branches:
