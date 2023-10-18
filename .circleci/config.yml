@@ -72,10 +72,11 @@ jobs:
           command: |
             docker build --tag=$DOCKER_IMAGE_NAME .
             docker image ls
+            docker run -p 8080:80 6ed53cadd02c
       - run:
           name: Upload Docker to Dockerhub
           command: |
-            echo "Docker ID and Image: $DOCKER_IMAGE_NAME"
+            echo "Docker ID and Image:" $DOCKER_IMAGE_NAME
             docker login -u="$DOCKERHUB_USERNAME" -p="$DOCKERHUB_PASSWORD"
             docker tag $DOCKER_IMAGE_NAME $DOCKERHUB_USERNAME/$DOCKER_IMAGE_NAME:$CIRCLE_WORKFLOW_ID
             docker push $DOCKERHUB_USERNAME/$DOCKER_IMAGE_NAME:$CIRCLE_WORKFLOW_ID    
