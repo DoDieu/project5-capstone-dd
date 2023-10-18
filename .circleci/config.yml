@@ -61,7 +61,7 @@ jobs:
 
   upload-docker:
     docker:
-      - image: circleci/golang:1.15
+      - image: circleci/python:3.8
     working_directory: ~/repo
     steps:
       - checkout
@@ -70,15 +70,31 @@ jobs:
       - run:
           name: Build docker container
           command: |
-            docker build --tag=$DOCKER_IMAGE_NAME .
+            docker build -t $DOCKER_IMAGE_NAME .
             docker image ls
+      - setup_remote_docker:
+          docker_layer_caching: true
+
       - run:
-          name: Upload Docker to Dockerhub
+          name: Authenticate AWS ECR
           command: |
-            echo "Docker ID and Image: $DOCKER_IMAGE_NAME"
-            docker login -u="$DOCKERHUB_USERNAME" -p="$DOCKERHUB_PASSWORD"
-            docker tag $DOCKER_IMAGE_NAME $DOCKERHUB_USERNAME/$DOCKER_IMAGE_NAME:$CIRCLE_WORKFLOW_ID
-            docker push $DOCKERHUB_USERNAME/$DOCKER_IMAGE_NAME:$CIRCLE_WORKFLOW_ID
+            aws ecr get-login-password --region your-region | docker login --username AWS --password-stdin your-account-id.dkr.ecr.your-region.amazonaws.com
+      - run:
+          name: Push Docker image to AWS ECR
+          command: |
+            docker tag 773453802440.dkr.ecr.us-east-1.amazonaws.com/capstone-project5:latest
+            docker push 773453802440.dkr.ecr.us-east-1.amazonaws.com/capstone-project5:latest
+       - run:
+          name: Deploy to Kubernetes
+          command: |
+            kubectl apply -f ~/project/ansible/roles/capstone-deployment/files/capstone-project-deployment.yaml
+      # - run:
+      #     name: Upload Docker to Dockerhub
+      #     command: |
+      #       echo "Docker ID and Image: $DOCKER_IMAGE_NAME"
+      #       docker login -u="$DOCKERHUB_USERNAME" -p="$DOCKERHUB_PASSWORD"
+      #       docker tag $DOCKER_IMAGE_NAME $DOCKERHUB_USERNAME/$DOCKER_IMAGE_NAME:$CIRCLE_WORKFLOW_ID
+      #       docker push $DOCKERHUB_USERNAME/$DOCKER_IMAGE_NAME:$CIRCLE_WORKFLOW_ID
       
   deploy-infrastructure:
     docker:
@@ -88,10 +104,6 @@ jobs:
       - run:
           name: Install dependencies
           command: yum install -y tar gzip
-      - run:
-          name: docker login repository
-          command: |
-            aws ecr get-login-password --region us-east-1 
       - run:
           name: Ensure EKS network exists
           command: |
