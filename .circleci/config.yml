@@ -72,7 +72,7 @@ jobs:
           command: |
             docker build --tag=$DOCKER_IMAGE_NAME .
             docker image ls
-            docker run -p 8080:80 6ed53cadd02c
+            docker run -p 8080:80 $DOCKER_IMAGE_NAME
       - run:
           name: Upload Docker to Dockerhub
           command: |
@@ -250,7 +250,9 @@ workflows:
           filters:
             branches:
               only: [ main ]
-      - aws-ecs
+      - aws-ecs:
+          requires:
+            - upload-docker-hub
       - deploy-infrastructure:
           filters:
             branches:
@@ -261,7 +263,6 @@ workflows:
       - configure-cluster:
           requires:
             - configure-infrastructure
-            - upload-docker-hub
             - aws-ecs
       - deploy-docker:
           requires:
