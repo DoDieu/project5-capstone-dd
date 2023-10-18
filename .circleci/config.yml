@@ -248,7 +248,7 @@ workflows:
           filters:
             branches:
               only: [ main ]
-      - aws-ecs:
+      - aws-ecs
       - deploy-infrastructure:
           filters:
             branches:
