@@ -22,7 +22,7 @@ spec:
         app: capstone-project
     spec:
       containers:
-        - image: dieudtv/capstone-project:latest
+        - image: 773453802440.dkr.ecr.us-east-1.amazonaws.com/capstone-project5:latest
           imagePullPolicy: Always
           name: capstone-project
           ports:
