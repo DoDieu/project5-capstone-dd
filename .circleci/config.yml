@@ -83,7 +83,6 @@ jobs:
   deploy-infrastructure:
     docker:
       - image: amazon/aws-cli
-      - image: circleci/golang:1.15
     steps:
       - checkout
       - run:
@@ -92,9 +91,7 @@ jobs:
       - run:
           name: docker login repository
           command: |
-            aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 773453802440.dkr.ecr.us-east-1.amazonaws.com
-            docker tag capstone-project5:latest 773453802440.dkr.ecr.us-east-1.amazonaws.com/capstone-project5:latest
-            docker push 773453802440.dkr.ecr.us-east-1.amazonaws.com/capstone-project5:latest
+            aws ecr get-login-password --region us-east-1 
       - run:
           name: Ensure EKS network exists
           command: |
