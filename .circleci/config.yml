@@ -62,9 +62,7 @@ jobs:
   upload-docker:
     docker:
       - image: circleci/python:3.8
-
     working_directory: ~/repo
-
     steps:
       - checkout
       - setup_remote_docker:
@@ -83,7 +81,7 @@ jobs:
           command: |
             docker tag 773453802440.dkr.ecr.us-east-1.amazonaws.com/capstone-project5:latest
             docker push 773453802440.dkr.ecr.us-east-1.amazonaws.com/capstone-project5:latest
-       - run:
+      - run:
           name: Deploy to Kubernetes
           command: |
             kubectl apply -f ~/project/ansible/roles/capstone-deployment/files/capstone-project-deployment.yaml
