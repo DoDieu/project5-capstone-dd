@@ -9,6 +9,7 @@ install:
 
 test:
 	#No tests yet
+py test
 
 lint:
 	./hadolint Dockerfile
