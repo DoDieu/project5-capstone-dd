@@ -93,8 +93,7 @@ jobs:
           name: Docker App to AWS ECS
           command: |
             aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 773453802440.dkr.ecr.us-east-1.amazonaws.com
-            docker build -t capstone-project5 .
-            docker tag capstone-project5:latest 773453802440.dkr.ecr.us-east-1.amazonaws.com/capstone-project5:latest
+            docker tag $DOCKER_IMAGE_NAME 773453802440.dkr.ecr.us-east-1.amazonaws.com/capstone-project5:latest
             docker push 773453802440.dkr.ecr.us-east-1.amazonaws.com/capstone-project5:latest
       - run:
           name: Kill docker container
