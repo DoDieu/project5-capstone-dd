@@ -85,6 +85,8 @@ jobs:
     steps:
       - checkout
       - install_awscli
+      - add_ssh_keys:
+          fingerprints: [31:30:44:3f:d4:92:b1:68:4f:0d:a9:66:b4:ec:40:5a]
       - run:
           name: Docker App to AWS ECS
           command: |
