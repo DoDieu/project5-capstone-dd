@@ -90,8 +90,7 @@ jobs:
           command: |
             echo aws ecr get-login-password --region us-east-1 
             aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 773453802440.dkr.ecr.us-east-1.amazonaws.com
-            sudo docker tag $DOCKER_IMAGE_NAME 773453802440.dkr.ecr.us-east-1.amazonaws.com/capstone-project5:latest
-            sudo docker push 773453802440.dkr.ecr.us-east-1.amazonaws.com/capstone-project5:latest
+            docker build -t capstone-project5 .
       
 
 
