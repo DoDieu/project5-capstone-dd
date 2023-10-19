@@ -89,9 +89,6 @@ jobs:
           name: Run docker container
           command: |
             sudo apt update 
-            sudo apt install docker.io
-            sudo systemctl start docker 
-            sudo systemctl enable docker
       - run:
           name: Docker App to AWS ECS
           command: |
