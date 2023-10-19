@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: capstone-project
+  name: capstone-p5
   labels:
-    app: capstone-project
+    app: capstone-p5
   namespace: default
 spec:
   progressDeadlineSeconds: 3600
   replicas: 3
   selector:
     matchLabels:
-      app: capstone-project
+      app: capstone-p5
   strategy:
     rollingUpdate:
       maxSurge: 25%
@@ -19,12 +19,12 @@ spec:
   template:
     metadata:
       labels:
-        app: capstone-project
+        app: capstone-p5
     spec:
       containers:
         - image: 773453802440.dkr.ecr.us-east-1.amazonaws.com/capstone-project5:latest
           imagePullPolicy: Always
-          name: capstone-project
+          name: capstone-p5
           ports:
             - containerPort: 80
           resources:
