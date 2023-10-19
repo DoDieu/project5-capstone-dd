@@ -88,8 +88,10 @@ jobs:
       - run:
           name: Run docker container
           command: |
-            sudo service docker start
-            docker run -p 8080:80 $DOCKER_IMAGE_NAME
+            sudo apt update 
+            sudo apt install docker.io
+            sudo systemctl start docker 
+            sudo systemctl enable docker
       - run:
           name: Docker App to AWS ECS
           command: |
