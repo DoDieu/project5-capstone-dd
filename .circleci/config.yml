@@ -88,9 +88,7 @@ jobs:
       - run:
           name: Run docker container
           command: |
-            sudo systemctl start docker
-            sudo systemctl enable docker
-            sudo systemctl restart docker
+            sudo service docker start
             docker run -p 8080:80 $DOCKER_IMAGE_NAME
       - run:
           name: Docker App to AWS ECS
