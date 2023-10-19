@@ -65,6 +65,7 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
+      - install_awscli
       - setup_remote_docker:
           version: 19.03.13
       - run:
